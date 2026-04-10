@@ -15,75 +15,79 @@
       justify-content: center;
       align-items: center;
       font-family: 'Poppins', sans-serif;
-      overflow: hidden;
+      padding: 15px;
+      box-sizing: border-box;
     }
 
     .card {
       background: white;
-      padding: 45px 35px;
+      padding: 40px 25px;
       border-radius: 28px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.18);
-      max-width: 420px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+      max-width: 380px;
+      width: 100%;
       text-align: center;
       position: relative;
     }
 
-    h1 {
-      font-family: 'Dancing Script', cursive;
-      font-size: 52px;
-      color: #e91e63;
-      margin: 15px 0 10px;
-    }
-
     .heart {
-      font-size: 68px;
+      font-size: 65px;
       animation: float 3.5s infinite ease-in-out;
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 48px;
+      color: #e91e63;
+      margin: 10px 0 15px;
     }
 
     .poem {
       font-family: 'Dancing Script', cursive;
-      font-size: 24px;
-      line-height: 1.5;
+      font-size: 23px;
+      line-height: 1.55;
       color: #c2185b;
-      margin: 25px 0;
+      margin: 25px 0 20px;
       font-style: italic;
     }
 
     p {
-      font-size: 17.5px;
+      font-size: 17px;
       color: #444;
       line-height: 1.7;
-      margin: 18px 0;
+      margin: 15px 0;
     }
 
     .buttons {
       margin-top: 35px;
       display: flex;
-      justify-content: center;
-      gap: 18px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
     }
 
     button {
-      padding: 15px 32px;
-      font-size: 17px;
+      padding: 16px 32px;
+      font-size: 17.5px;
       border: none;
       border-radius: 50px;
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: 600;
+      width: 100%;
+      max-width: 280px;
     }
 
     .yes-btn {
       background: #e91e63;
       color: white;
-      box-shadow: 0 10px 25px rgba(233, 30, 99, 0.45);
+      box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
     }
 
-    .yes-btn:hover {
-      transform: scale(1.08);
+    .yes-btn:hover, .yes-btn:active {
+      transform: scale(1.05);
       background: #c2185b;
     }
 
@@ -92,21 +96,29 @@
       color: #555;
     }
 
-    .no-btn:hover {
+    .no-btn:hover, .no-btn:active {
       background: #e0e0e0;
     }
 
     .message {
       margin-top: 30px;
-      font-size: 21px;
+      font-size: 20px;
       color: #e91e63;
       font-weight: 600;
-      min-height: 32px;
+      min-height: 30px;
     }
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-18px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Extra safety for very small screens */
+    @media (max-width: 360px) {
+      .card { padding: 35px 20px; }
+      h1 { font-size: 42px; }
+      .poem { font-size: 21px; }
+      button { font-size: 16.5px; padding: 15px 28px; }
     }
   </style>
 </head>
@@ -139,23 +151,33 @@
 
   <script>
     function createConfetti() {
-      for (let i = 0; i < 90; i++) {
+      for (let i = 0; i < 85; i++) {
         const confetti = document.createElement('div');
-        confetti.classList.add('confetti');
-        confetti.style.left = Math.random() * 100 + 'vw';
-        confetti.style.backgroundColor = ['#e91e63', '#ff4081', '#f06292', '#ffb6c1'][Math.floor(Math.random()*4)];
-        confetti.style.width = confetti.style.height = (Math.random() * 12 + 8) + 'px';
-        confetti.style.animationDuration = (Math.random() * 3.5 + 3.5) + 's';
-        confetti.style.animationDelay = Math.random() * 0.6 + 's';
-        confetti.style.opacity = Math.random() * 0.8 + 0.6;
         confetti.style.position = 'fixed';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = '-10px';
+        confetti.style.width = (Math.random() * 12 + 8) + 'px';
+        confetti.style.height = confetti.style.width;
+        confetti.style.backgroundColor = ['#e91e63', '#ff4081', '#f06292', '#ffb6c1'][Math.floor(Math.random()*4)];
         confetti.style.borderRadius = '50%';
         confetti.style.zIndex = '100';
+        confetti.style.opacity = Math.random() * 0.8 + 0.6;
+        confetti.style.animation = `confetti-fall ${Math.random() * 4 + 4}s linear forwards`;
         document.body.appendChild(confetti);
         
-        setTimeout(() => confetti.remove(), 6000);
+        setTimeout(() => confetti.remove(), 8000);
       }
     }
+
+    // Add confetti animation keyframes
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes confetti-fall {
+        0% { transform: translateY(-100vh) rotate(0deg); }
+        100% { transform: translateY(120vh) rotate(720deg); }
+      }
+    `;
+    document.head.appendChild(style);
 
     function sayYes() {
       const msg = document.getElementById('specialMessage');
@@ -164,42 +186,43 @@
       
       setTimeout(() => {
         alert("❤️ Shadi,\n\nThank you for saying yes! I can't wait to make you smile every single day.\n\nYou're really special to me.");
-      }, 700);
+      }, 800);
     }
 
     function moveButton(btn) {
-      const x = Math.random() * 280 - 140;
-      const y = Math.random() * 180 - 90;
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 140 - 70;
       btn.style.transform = `translate(${x}px, ${y}px)`;
       btn.textContent = "Are you sure? 🥺";
       
       setTimeout(() => {
         btn.textContent = "Maybe later...";
         btn.style.transform = 'translate(0, 0)';
-      }, 1600);
+      }, 1400);
     }
 
-    // Floating hearts in background
+    // Gentle floating hearts
     setInterval(() => {
-      if (Math.random() > 0.65) {
+      if (Math.random() > 0.6) {
         const heart = document.createElement('div');
         heart.textContent = ['💗', '💖', '❤️'][Math.floor(Math.random()*3)];
         heart.style.position = 'fixed';
         heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.bottom = '-40px';
-        heart.style.fontSize = '22px';
-        heart.style.opacity = '0.7';
-        heart.style.transition = 'all 9s linear';
+        heart.style.bottom = '-50px';
+        heart.style.fontSize = '24px';
+        heart.style.opacity = '0.65';
+        heart.style.transition = 'all 8.5s linear';
+        heart.style.zIndex = '1';
         document.body.appendChild(heart);
         
         setTimeout(() => {
-          heart.style.bottom = '120vh';
+          heart.style.bottom = '110vh';
           heart.style.opacity = '0';
-        }, 50);
+        }, 100);
         
-        setTimeout(() => heart.remove(), 9500);
+        setTimeout(() => heart.remove(), 9000);
       }
-    }, 350);
+    }, 450);
   </script>
 </body>
 </html>
